@@ -34,9 +34,9 @@ async function loadMenu(){
 
         menuDiv.innerHTML += `
         <div class="menu-item">
-            <h3>${item.name}</h3>
-            <p>${item.description}</p>
-            <b>₹${item.price}</b>
+            <h3>${item.Name}</h3>
+            <p>${item.Description}</p>
+            <b>₹${item.Price}</b>
             <br><br>
             <button onclick='addToCart("${item.name}",${item.price})'>
             Add to Cart

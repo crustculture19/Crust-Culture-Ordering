@@ -33,12 +33,12 @@ async function loadMenu(){
         let item = doc.data();
 
         menuDiv.innerHTML += `
-        <div class="menu-item">
+        <div class="Menu-Item">
             <h3>${item.Name}</h3>
             <p>${item.Description}</p>
             <b>₹${item.Price}</b>
             <br><br>
-            <button onclick='addToCart("${item.name}",${item.price})'>
+            <button onclick='addToCart("${Item.Name}",${Item.Price})'>
             Add to Cart
             </button>
         </div>
@@ -51,17 +51,17 @@ async function loadMenu(){
 
 // Add cart
 
-window.addToCart = function(name,price){
+window.addToCart = function(Name,Price){
 
     cart.push({
-        name:name,
-        price:price
+        Name:Name,
+        Price:Price
     });
 
     total += price;
 
     document.getElementById("cart").innerHTML =
-    cart.map(item=>item.name).join("<br>");
+    cart.map(item=>Item.Name).join("<br>");
 
     document.getElementById("total").innerText = total;
 
@@ -82,8 +82,8 @@ window.placeOrder = async function(){
 
         customerName:name,
         phone:phone,
-        address:address,
-        items:cart,
+        Address:address,
+        Items:cart,
         totalAmount:total,
         orderStatus:"New",
         createdAt:serverTimestamp()

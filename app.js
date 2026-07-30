@@ -24,7 +24,7 @@ async function loadMenu(){
 
     const menuDiv = document.getElementById("menu");
 
-    const querySnapshot = await getDocs(collection(db,"menu"));
+    const querySnapshot = await getDocs(collection(db,"Menu"));
 
     menuDiv.innerHTML="";
 

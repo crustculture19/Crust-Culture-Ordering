@@ -1,5 +1,12 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, collection, getDocs, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { 
+    getFirestore, 
+    collection, 
+    getDocs, 
+    addDoc, 
+    serverTimestamp 
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
 
 const firebaseConfig = {
   apiKey: "AIzaSyC9jmrFTYlOyOPoQ9U3oc5tACuqOsSICeY",
@@ -11,57 +18,91 @@ const firebaseConfig = {
   measurementId: "G-4DTJZ9LS33"
 };
 
+
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+
 
 let cart = [];
 let total = 0;
 
 
-// Load Menu
+// LOAD MENU
 
 async function loadMenu(){
 
     const menuDiv = document.getElementById("menu");
 
-    const querySnapshot = await getDocs(collection(db,"Menu"));
+    const snapshot = await getDocs(collection(db,"Menu"));
 
-    menuDiv.innerHTML="";
+    menuDiv.innerHTML = "";
 
-    querySnapshot.forEach((doc)=>{
+    snapshot.forEach((doc)=>{
 
-        let item = doc.data();
+        const item = doc.data();
 
         menuDiv.innerHTML += `
-        <div class="Menu-Item">
+
+        <div class="menu-item">
+
             <h3>${item.Name}</h3>
+
             <p>${item.Description}</p>
+
             <b>₹${item.Price}</b>
+
             <br><br>
-            <button onclick='addToCart("${Item.Name}",${Item.Price})'>
-            Add to Cart
+
+            <button class="add-btn">
+                Add to Cart
             </button>
+
         </div>
+
         `;
 
+
+        const button = menuDiv.lastElementChild.querySelector(".add-btn");
+
+
+        button.onclick = function(){
+
+            addToCart(
+                item.Name,
+                item.Price
+            );
+
+        };
+
+
     });
+
 
 }
 
 
-// Add cart
 
-window.addToCart = function(name, price){
+// ADD TO CART
+
+function addToCart(name, price){
 
     cart.push({
-        name: name,
-        price: Number(price)
+        name:name,
+        price:Number(price)
     });
 
-    total = total + Number(price);
+
+    total = cart.reduce(
+        (sum,item)=>sum + item.price,
+        0
+    );
+
 
     document.getElementById("cart").innerHTML =
-    cart.map(item => item.name + " - ₹" + item.price).join("<br>");
+    cart.map(item =>
+        item.name + " - ₹" + item.price
+    ).join("<br>");
+
 
     document.getElementById("total").innerText = total;
 
@@ -69,31 +110,57 @@ window.addToCart = function(name, price){
 
 
 
-// Place Order
+// PLACE ORDER
 
 window.placeOrder = async function(){
 
-    let name=document.getElementById("name").value;
-    let phone=document.getElementById("phone").value;
-    let address=document.getElementById("address").value;
+    let customerName =
+    document.getElementById("name").value;
+
+
+    let phone =
+    document.getElementById("phone").value;
+
+
+    let address =
+    document.getElementById("address").value;
+
 
 
     await addDoc(collection(db,"Orders"),{
 
-        customerName:name,
-        phone:phone,
-        Address:address,
-        Items:cart,
-        totalAmount:total,
+        customerName: customerName,
+
+        phone: phone,
+
+        address: address,
+
+        items: cart,
+
+        totalAmount: total,
+
         orderStatus:"New",
-        createdAt:serverTimestamp()
+
+        createdAt: serverTimestamp()
 
     });
 
 
-    alert("Order Placed Successfully! 🍕");
+    alert("Order Placed Successfully 🍕");
+
+
+    cart = [];
+    total = 0;
+
+
+    document.getElementById("cart").innerHTML =
+    "Cart is empty";
+
+
+    document.getElementById("total").innerText = 0;
 
 };
+
 
 
 loadMenu();

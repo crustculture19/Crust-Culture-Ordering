@@ -86,23 +86,36 @@ async function loadMenu(){
 
 function addToCart(name, price){
 
+    console.log("Added:", name, price);
+
+    let itemPrice = Number(price);
+
     cart.push({
-        name:name,
-        price:Number(price)
+        name: name,
+        price: itemPrice
     });
 
 
-    total = cart.reduce(
-        (sum,item)=>sum + item.price,
-        0
-    );
+    total = 0;
+
+    cart.forEach(function(item){
+        total = total + item.price;
+    });
 
 
-    document.getElementById("cart").innerHTML =
-    cart.map(item =>
-        item.name + " - ₹" + item.price
-    ).join("<br>");
+    let cartHTML = "";
 
+    cart.forEach(function(item){
+
+        cartHTML += `
+        ${item.name} - ₹${item.price}
+        <br>
+        `;
+
+    });
+
+
+    document.getElementById("cart").innerHTML = cartHTML;
 
     document.getElementById("total").innerText = total;
 

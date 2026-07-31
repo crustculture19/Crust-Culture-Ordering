@@ -61,9 +61,9 @@ window.addToCart = function(Name,Price){
     total += price;
 
     document.getElementById("cart").innerHTML =
-    cart.map(item=>Item.Name).join("<br>");
+    cart.map(item => item.Name).join("<br>");
 
-    document.getElementById("total").innerText = total;
+   document.getElementById("total").innerText = total;
 
 }
 

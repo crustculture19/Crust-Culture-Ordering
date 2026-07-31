@@ -51,19 +51,19 @@ async function loadMenu(){
 
 // Add cart
 
-window.addToCart = function(Name,Price){
+window.addToCart = function(name, price){
 
     cart.push({
-        Name:Name,
-        Price:Price
+        name: name,
+        price: Number(price)
     });
 
-    total += price;
+    total = total + Number(price);
 
     document.getElementById("cart").innerHTML =
-    cart.map(item => item.Name).join("<br>");
+    cart.map(item => item.name + " - ₹" + item.price).join("<br>");
 
-   document.getElementById("total").innerText = total;
+    document.getElementById("total").innerText = total;
 
 }
 
